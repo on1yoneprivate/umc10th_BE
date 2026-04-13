@@ -32,4 +32,12 @@ public class MissionResDTO {
             List<MissionItem> missions,
             PageInfo pageInfo
     ) {}
+
+    public record MissionSuccess(
+            Long userMissionId,
+            String status,
+            LocalDateTime completedAt,
+            Integer earnedPoint,
+            Integer currentPoint
+    ) {}
 }

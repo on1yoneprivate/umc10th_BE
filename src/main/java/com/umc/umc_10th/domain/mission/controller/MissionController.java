@@ -7,10 +7,7 @@ import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,5 +32,15 @@ public class MissionController {
     ) {
         BaseSuccessCode code = MissionSuccessCode.MISSION_COMPLETED_LIST_SUCCESS;
         return ApiResponse.onSuccess(code, missionService.getCompletedMissions(page, size));
+    }
+
+    @PutMapping("/{userMissionId}/success")
+    public ApiResponse<MissionResDTO.MissionSuccess> completeMission(
+            @PathVariable @Min(1) Long userMissionId
+    ) {
+        BaseSuccessCode code = MissionSuccessCode.MISSION_SUCCESS_UPDATE;
+
+        return ApiResponse.onSuccess(code, missionService.completeMission(userMissionId)
+        );
     }
 }

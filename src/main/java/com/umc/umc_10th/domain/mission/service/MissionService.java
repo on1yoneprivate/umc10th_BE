@@ -5,6 +5,8 @@ import com.umc.umc_10th.domain.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class MissionService {
@@ -17,6 +19,10 @@ public class MissionService {
     }
 
     public MissionResDTO.MissionList getCompletedMissions(int page, int size){
+        return null;
+    }
+
+    public MissionResDTO.MissionSuccess completeMission(Long userMissionId) {
         return null;
     }
 }
