@@ -1,6 +1,7 @@
 package com.umc.umc_10th.domain.mission.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.umc.umc_10th.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,11 +20,17 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "point", nullable = false)
     private Long point;
 
     @Column(name = "mission_condition", nullable = false)
-    private String condition;
+    private Long condition;
+
+    @Column(name = "content")
+    private String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "deadline", nullable = false)
