@@ -6,14 +6,13 @@ import java.util.List;
 public class MissionResDTO {
 
     public record MissionItem(
-            Long userMissionId,
+            Long memberMissionId,
             Long missionId,
             String storeName,
             String title,
             String description,
-            String missionType,
-            Integer targetAmount,
-            Integer rewardPoint,
+            Long condition,
+            Long rewardPoint,
             String status,
             LocalDateTime challengedAt,
             LocalDateTime completedAt
