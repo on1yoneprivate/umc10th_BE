@@ -2,11 +2,13 @@ package com.umc.umc_10th.domain.review.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.umc.umc_10th.domain.member.entity.Member;
-import com.umc.umc_10th.domain.mission.entity.Store;
+import com.umc.umc_10th.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,6 +21,7 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "review_id")
     private Long id;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
@@ -49,5 +52,11 @@ public class Review {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reply_id")
+    private Reply reply;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<ReviewPhoto> reviewPhotos = new ArrayList<>();
 
 }
