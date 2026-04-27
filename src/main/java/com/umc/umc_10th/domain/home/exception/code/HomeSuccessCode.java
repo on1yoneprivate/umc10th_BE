@@ -1,4 +1,4 @@
-package com.umc.umc_10th.domain.member.exception.code;
+package com.umc.umc_10th.domain.home.exception.code;
 
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum MemberSuccessCode implements BaseSuccessCode {
+public enum HomeSuccessCode implements BaseSuccessCode {
 
-    OK(HttpStatus.OK, "MEMBER200_01", "회원가입이 성공적으로 완료되었습니다."),
+    HOME_SUMMARY_SUCCESS(HttpStatus.OK, "HOME200_01", "성공적으로 조회되었습니다."),
 
     ;
 
