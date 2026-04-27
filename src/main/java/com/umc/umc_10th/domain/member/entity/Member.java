@@ -2,11 +2,12 @@ package com.umc.umc_10th.domain.member.entity;
 
 import com.umc.umc_10th.domain.member.enums.Gender;
 import com.umc.umc_10th.domain.member.enums.SocialType;
-import com.umc.umc_10th.domain.member.enums.Address;
+import com.umc.umc_10th.domain.member.enums.RegionType;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,12 +20,13 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     @Column(name = "nickname", nullable = false, length = 50)
     private String nickname;
 
-    @Column(name = "email", unique = true, length = 100, nullable = true)
+    @Column(name = "email", unique = true, length = 100, nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -44,8 +46,8 @@ public class Member {
     private Boolean isActive = true;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "address", length = 20)
-    private Address address;
+    @Column(name = "region", length = 20)
+    private RegionType region;
 
     @Column(name = "address_detail", length = 255)
     private String addressDetail;
@@ -56,4 +58,16 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(name = "social_type", length = 20, nullable = true)
     private SocialType socialType;
+
+    @Column(name = "social_uid", length = 255, nullable = false)
+    private String socialUid;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }
