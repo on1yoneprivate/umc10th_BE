@@ -9,7 +9,7 @@ import com.umc.umc_10th.domain.review.exception.code.ReviewErrorCode;
 import com.umc.umc_10th.domain.review.repository.ReviewRepository;
 import com.umc.umc_10th.domain.store.entity.Store;
 import com.umc.umc_10th.domain.store.repository.StoreRepository;
-import com.umc.umc_10th.global.apiPayLoad.exception.ProjectException;
+import com.umc.umc_10th.global.apiPayLoad.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,14 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
 
-    public final ReviewResDTO.CreateReviewResponse createReview(
-            Long storeId, Long memberId, ReviewReqDTO.CreateReview request){
+    public ReviewResDTO.CreateReviewResponse createReview(
+            Long storeId, Long memberId, ReviewReqDTO.CreateReviewRequest request){
 
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new ProjectException(ReviewErrorCode.STORE_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ReviewErrorCode.STORE_NOT_FOUND));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ProjectException(ReviewErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ReviewErrorCode.MEMBER_NOT_FOUND));
 
         Review review = Review.builder()
                 .store(store)

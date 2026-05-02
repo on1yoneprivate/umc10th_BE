@@ -5,7 +5,7 @@ import com.umc.umc_10th.domain.member.dto.MemberResDTO;
 import com.umc.umc_10th.domain.member.entity.Member;
 import com.umc.umc_10th.domain.member.exception.code.MemberErrorCode;
 import com.umc.umc_10th.domain.member.repository.MemberRepository;
-import com.umc.umc_10th.global.apiPayLoad.exception.ProjectException;
+import com.umc.umc_10th.global.apiPayLoad.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class MemberService {
     public MemberResDTO.MyPage getMyPage(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         return new MemberResDTO.MyPage(
                 member.getId(),

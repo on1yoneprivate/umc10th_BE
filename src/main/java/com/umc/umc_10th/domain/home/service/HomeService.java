@@ -4,7 +4,6 @@ import com.umc.umc_10th.domain.home.dto.HomeResDTO;
 import com.umc.umc_10th.domain.member.entity.Member;
 import com.umc.umc_10th.domain.member.exception.code.MemberErrorCode;
 import com.umc.umc_10th.domain.member.repository.MemberRepository;
-import com.umc.umc_10th.domain.mission.entity.Mission;
 import com.umc.umc_10th.domain.mission.entity.mapping.MemberMission;
 import com.umc.umc_10th.domain.mission.enums.MissionStatus;
 import com.umc.umc_10th.domain.mission.repository.MemberMissionRepository;
@@ -12,7 +11,7 @@ import com.umc.umc_10th.domain.mission.repository.MissionRepository;
 import com.umc.umc_10th.domain.review.exception.code.ReviewErrorCode;
 import com.umc.umc_10th.domain.store.entity.Region;
 import com.umc.umc_10th.domain.store.repository.RegionRepository;
-import com.umc.umc_10th.global.apiPayLoad.exception.ProjectException;
+import com.umc.umc_10th.global.apiPayLoad.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,10 +29,10 @@ public class HomeService {
     public HomeResDTO.Summary getHomeSummary(Long memberId, Long regionId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Region region = regionRepository.findById(regionId)
-                .orElseThrow(() -> new ProjectException(ReviewErrorCode.REGION_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ReviewErrorCode.REGION_NOT_FOUND));
 
         int completedCount = memberMissionRepository.countByMemberIdAndStatus(
                 memberId,
