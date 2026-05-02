@@ -47,10 +47,10 @@ public class ReviewController {
     public ApiResponse<ReviewResDTO.MyReviewList> getMyReviewsOrderByRating(
             @RequestParam Long memberId,
             @RequestParam(required = false) Double cursorRating,
-            @RequestParam(required = false) Long cursor,
+            @RequestParam(required = false) Long cursorId,
             @RequestParam(defaultValue = "10") @Min(1) int size
     ){
         BaseSuccessCode code = ReviewSuccessCode.REVIEW_GET_SUCCESS;
-        return ApiResponse.onSuccess(code, reviewService.getMyReviewsOrderByRating(memberId, cursorRating, cursor, size));
+        return ApiResponse.onSuccess(code, reviewService.getMyReviewsOrderByRating(memberId, cursorRating, cursorId, size));
     }
 }
