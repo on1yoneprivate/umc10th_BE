@@ -18,7 +18,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/{storeId}")
-    public ApiResponse<ReviewResDTO.CreateReview> createReview(
+    public ApiResponse<ReviewResDTO.CreateReviewResponse> createReview(
             @PathVariable Long storeId,
             @RequestParam Long memberId,
             @RequestBody @Valid ReviewReqDTO.CreateReview request) {

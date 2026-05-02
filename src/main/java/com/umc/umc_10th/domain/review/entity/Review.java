@@ -3,6 +3,7 @@ package com.umc.umc_10th.domain.review.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.umc.umc_10th.domain.member.entity.Member;
 import com.umc.umc_10th.domain.store.entity.Store;
+import com.umc.umc_10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,12 +13,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "review")
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +29,6 @@ public class Review {
 
     @Column(name = "rating", nullable = false)
     private Double rating;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "deleted_at")

@@ -13,8 +13,6 @@ import com.umc.umc_10th.global.apiPayLoad.exception.ProjectException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -23,7 +21,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
 
-    public final ReviewResDTO.CreateReview createReview(
+    public final ReviewResDTO.CreateReviewResponse createReview(
             Long storeId, Long memberId, ReviewReqDTO.CreateReview request){
 
         Store store = storeRepository.findById(storeId)
@@ -32,23 +30,19 @@ public class ReviewService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ProjectException(ReviewErrorCode.MEMBER_NOT_FOUND));
 
-        LocalDateTime now = LocalDateTime.now();
-
         Review review = Review.builder()
                 .store(store)
                 .member(member)
                 .rating(request.rating())
                 .content(request.content())
-                .createdAt(now)
-                .updatedAt(now)
                 .build();
 
         Review savedReview = reviewRepository.save(review);
 
-        return new ReviewResDTO.CreateReview(
+        return new ReviewResDTO.CreateReviewResponse(
                 savedReview.getId(),
-                store.getId(),
-                member.getId(),
+                savedReview.getStore().getId(),
+                savedReview.getMember().getId(),
                 savedReview.getCreatedAt()
         );
     }
