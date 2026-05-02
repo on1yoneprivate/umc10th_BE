@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Address {
+public enum RegionType {
 
     GANGNAMGU("강남구"),
     GANGDONGGU("강동구"),

@@ -1,5 +1,6 @@
 package com.umc.umc_10th.domain.member.dto;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
@@ -13,4 +14,15 @@ public class MemberResDTO {
             @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
             LocalDateTime createdAt
     ){}
+
+    // 마이페이지
+    public record MyPage(
+            Long memberId,
+            String nickname,
+            String email,
+            String phone,
+            Boolean isPhoneVerified,
+            Long point,
+            String profileUrl
+    ) {}
 }

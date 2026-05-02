@@ -7,10 +7,7 @@ import com.umc.umc_10th.domain.member.service.MemberService;
 import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +22,12 @@ public class MemberController {
 
         BaseSuccessCode code = MemberSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.signUp(request));
+    }
+
+    @GetMapping("/mypage")
+    public ApiResponse<MemberResDTO.MyPage> getMyPage(@RequestParam Long memberId) {
+
+        BaseSuccessCode code = MemberSuccessCode.OK;
+        return ApiResponse.onSuccess(code, memberService.getMyPage(memberId));
     }
 }

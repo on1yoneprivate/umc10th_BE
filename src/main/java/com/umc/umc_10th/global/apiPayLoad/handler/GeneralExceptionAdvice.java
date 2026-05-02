@@ -3,7 +3,7 @@ package com.umc.umc_10th.global.apiPayLoad.handler;
 import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseErrorCode;
 import com.umc.umc_10th.global.apiPayLoad.code.GeneralErrorCode;
-import com.umc.umc_10th.global.apiPayLoad.exception.ProjectException;
+import com.umc.umc_10th.global.apiPayLoad.exception.CustomException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GeneralExceptionAdvice {
 
     // 프로젝트에서 발생한 예외 처리
-    @ExceptionHandler(ProjectException.class)
+    @ExceptionHandler(CustomException.class)
     public ResponseEntity<ApiResponse<Void>> handleMemberException(
-            ProjectException e
+            CustomException e
     ) {
         BaseErrorCode errorCode = e.getErrorCode();
         return ResponseEntity.status(errorCode.getStatus())

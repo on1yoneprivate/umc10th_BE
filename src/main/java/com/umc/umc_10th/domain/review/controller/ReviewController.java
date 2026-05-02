@@ -8,22 +8,25 @@ import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
+@Validated
 public class ReviewController {
 
     private final ReviewService reviewService;
 
     @PostMapping("/{storeId}")
-    public ApiResponse<ReviewResDTO.CreateReview> createReview(
+    public ApiResponse<ReviewResDTO.CreateReviewResponse> createReview(
             @PathVariable Long storeId,
-            @RequestBody @Valid ReviewReqDTO.CreateReview request) {
+            @RequestParam Long memberId,
+            @Valid @RequestBody ReviewReqDTO.CreateReviewRequest request) {
 
         BaseSuccessCode code = ReviewSuccessCode.OK;
-        return ApiResponse.onSuccess(code, reviewService.createReview(request));
+        return ApiResponse.onSuccess(code, reviewService.createReview(storeId, memberId,request));
 
     }
 }
