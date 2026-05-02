@@ -23,4 +23,22 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             @Param("cursor") Long cursor,
             Pageable pageable
     );
+
+    // 별점순 조회
+    // 별점이 같으면 reviewId 기준 정렬
+    @Query("""
+        SELECT r FROM Review r
+        JOIN FETCH r.store s
+        WHERE r.member.id = :memberId
+        AND (
+            :cursorRating IS NULL OR r.rating < :cursorRating OR (r.rating = :cursorRating AND r.id < :cursorId)
+        )
+        ORDER BY r.rating DESC, r.id DESC
+    """)
+    List<Review> findMyReviewsOrderByRating(
+            @Param("memberId") Long memberId,
+            @Param("cursorRating") Double cursorRating,
+            @Param("cursorId") Long cursorId,
+            Pageable pageable
+    );
 }

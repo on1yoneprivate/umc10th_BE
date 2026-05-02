@@ -41,4 +41,16 @@ public class ReviewController {
         BaseSuccessCode code = ReviewSuccessCode.REVIEW_GET_SUCCESS;
         return ApiResponse.onSuccess(code, reviewService.getMyReviewsOrderById(memberId, cursor, size));
     }
+
+    // 작성한 리뷰 조회 - 별점순 조회
+    @GetMapping("/my/rating")
+    public ApiResponse<ReviewResDTO.MyReviewList> getMyReviewsOrderByRating(
+            @RequestParam Long memberId,
+            @RequestParam(required = false) Double cursorRating,
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ){
+        BaseSuccessCode code = ReviewSuccessCode.REVIEW_GET_SUCCESS;
+        return ApiResponse.onSuccess(code, reviewService.getMyReviewsOrderByRating(memberId, cursorRating, cursor, size));
+    }
 }

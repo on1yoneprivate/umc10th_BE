@@ -64,6 +64,18 @@ public class ReviewService {
         return toMyReviewList(reviews, size);
     }
 
+    // 내가 작성한 리뷰 조회 - 별점순 조회
+    public ReviewResDTO.MyReviewList getMyReviewsOrderByRating(
+            Long memberId, Double cursorRating, Long cursorId, int size) {
+
+        Pageable pageable = PageRequest.of(0, size+1);
+
+        List<Review> reviews = reviewRepository.findMyReviewsOrderByRating(
+                memberId, cursorRating, cursorId, pageable);
+
+        return toMyReviewList(reviews, size);
+    }
+
     private ReviewResDTO.MyReviewList toMyReviewList(List<Review> reviews, int size) {
         boolean hasNext = reviews.size() > size;
 
