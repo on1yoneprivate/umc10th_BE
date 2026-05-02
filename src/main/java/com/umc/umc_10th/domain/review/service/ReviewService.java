@@ -11,7 +11,11 @@ import com.umc.umc_10th.domain.store.entity.Store;
 import com.umc.umc_10th.domain.store.repository.StoreRepository;
 import com.umc.umc_10th.global.apiPayLoad.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +48,43 @@ public class ReviewService {
                 savedReview.getStore().getId(),
                 savedReview.getMember().getId(),
                 savedReview.getCreatedAt()
+        );
+    }
+
+    // 내가 작성한 리뷰 조회 - reviewId순 조회
+    public ReviewResDTO.MyReviewList getMyReviewsOrderById(
+            Long memberId, Long cursor, int size) {
+
+        Pageable pageable = PageRequest.of(0, size+1);
+
+        List<Review> reviews = reviewRepository.findMyReviewsOrderById(
+                memberId, cursor, pageable
+        );
+
+        return toMyReviewList(reviews, size);
+    }
+
+    private ReviewResDTO.MyReviewList toMyReviewList(List<Review> reviews, int size) {
+        boolean hasNext = reviews.size() > size;
+
+        List<Review> content = hasNext ? reviews.subList(0, size) : reviews;
+
+        List<ReviewResDTO.MyReviewItem> reviewItems = content.stream()
+                .map(review -> new ReviewResDTO.MyReviewItem(
+                        review.getId(),
+                        review.getStore().getId(),
+                        review.getStore().getName(),
+                        review.getRating(),
+                        review.getContent(),
+                        review.getCreatedAt()
+                ))
+                .toList();
+
+        Long nextCursor = content.isEmpty() ? null : content.get(content.size() - 1).getId();
+
+        return new ReviewResDTO.MyReviewList(
+                reviewItems,
+                new ReviewResDTO.CursorInfo(nextCursor, hasNext)
         );
     }
 }
