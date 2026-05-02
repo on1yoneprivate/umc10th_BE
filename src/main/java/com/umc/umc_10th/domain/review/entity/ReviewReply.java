@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Table(name = "reply")
-public class Reply {
+public class ReviewReply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

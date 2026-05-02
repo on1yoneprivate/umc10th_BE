@@ -46,7 +46,7 @@ public class Review extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reply_id")
-    private Reply reply;
+    private ReviewReply reply;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewPhoto> reviewPhotos = new ArrayList<>();
