@@ -34,7 +34,7 @@ public class MemberMission {
     @Column(name = "status", nullable = false)
     private MissionStatus status;
 
-    @Column(name = "challenged_at", nullable = false)
+    @Column(name = "challenged_at")
     private LocalDateTime challengedAt;
 
     @Column(name = "completed_at")
