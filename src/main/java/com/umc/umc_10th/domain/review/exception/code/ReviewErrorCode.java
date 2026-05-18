@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ReviewErrorCode implements BaseErrorCode {
 
+    INVALID_CURSOR(HttpStatus.BAD_REQUEST, "E-400-01", "올바르지 않은 커서 형식입니다."),
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "E-404-01", "해당 가게를 찾을 수 없습니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "E-404-02", "해당 회원을 찾을 수 없습니다."),
     REGION_NOT_FOUND(HttpStatus.NOT_FOUND, "E-404-03", "해당 지역을 찾을 수 없습니다."),

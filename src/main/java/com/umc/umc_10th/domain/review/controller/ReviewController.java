@@ -7,6 +7,7 @@ import com.umc.umc_10th.domain.review.service.ReviewService;
 import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,30 @@ public class ReviewController {
             @RequestParam Long memberId,
             @Valid @RequestBody ReviewReqDTO.CreateReviewRequest request) {
 
-        BaseSuccessCode code = ReviewSuccessCode.OK;
+        BaseSuccessCode code = ReviewSuccessCode.REVIEW_CREATE_SUCCESS;
         return ApiResponse.onSuccess(code, reviewService.createReview(storeId, memberId,request));
 
+    }
+
+    // 작성한 리뷰 조회 - reviewId순 조회
+    @GetMapping("/my/id")
+    public ApiResponse<ReviewResDTO.MyReviewList> getMyReviewsOrderById(
+            @RequestParam Long memberId,
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ){
+        BaseSuccessCode code = ReviewSuccessCode.REVIEW_GET_SUCCESS;
+        return ApiResponse.onSuccess(code, reviewService.getMyReviewsOrderById(memberId, cursor, size));
+    }
+
+    // 작성한 리뷰 조회 - 별점순 조회
+    @GetMapping("/my/rating")
+    public ApiResponse<ReviewResDTO.MyReviewList> getMyReviewsOrderByRating(
+            @RequestParam Long memberId,
+            @RequestParam(required = false) String cursor,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ){
+        BaseSuccessCode code = ReviewSuccessCode.REVIEW_GET_SUCCESS;
+        return ApiResponse.onSuccess(code, reviewService.getMyReviewsOrderByRating(memberId, cursor, size));
     }
 }
