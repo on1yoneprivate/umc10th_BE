@@ -28,7 +28,7 @@ public class ReviewResDTO {
 
     // 커서 기반
     public record CursorInfo(
-            Long nextCursor,
+            String nextCursor,          // 복합 커서로 처리하기 위해 String 타입으로 지정
             boolean hasNext
     ){}
 

@@ -5,6 +5,7 @@ import com.umc.umc_10th.domain.member.repository.MemberRepository;
 import com.umc.umc_10th.domain.review.dto.ReviewReqDTO;
 import com.umc.umc_10th.domain.review.dto.ReviewResDTO;
 import com.umc.umc_10th.domain.review.entity.Review;
+import com.umc.umc_10th.domain.review.exception.ReviewException;
 import com.umc.umc_10th.domain.review.exception.code.ReviewErrorCode;
 import com.umc.umc_10th.domain.review.repository.ReviewRepository;
 import com.umc.umc_10th.domain.store.entity.Store;
@@ -66,12 +67,14 @@ public class ReviewService {
 
     // 내가 작성한 리뷰 조회 - 별점순 조회
     public ReviewResDTO.MyReviewList getMyReviewsOrderByRating(
-            Long memberId, Double cursorRating, Long cursorId, int size) {
+            Long memberId, String cursor, int size) {
+
+        RatingCursor ratingCursor = decodeRatingCursor(cursor);
 
         Pageable pageable = PageRequest.of(0, size+1);
 
         List<Review> reviews = reviewRepository.findMyReviewsOrderByRating(
-                memberId, cursorRating, cursorId, pageable);
+                memberId, ratingCursor.rating(), ratingCursor.reviewId(), pageable);
 
         return toMyReviewList(reviews, size);
     }
@@ -92,11 +95,38 @@ public class ReviewService {
                 ))
                 .toList();
 
-        Long nextCursor = content.isEmpty() ? null : content.get(content.size() - 1).getId();
+        String nextCursor = null;
+        if (!content.isEmpty()) {
+            Review lastReview = content.get(content.size() - 1);
+            nextCursor = lastReview.getRating() + "_" + lastReview.getId();
+        }
 
         return new ReviewResDTO.MyReviewList(
                 reviewItems,
                 new ReviewResDTO.CursorInfo(nextCursor, hasNext)
         );
     }
+
+    private RatingCursor decodeRatingCursor(String cursor) {
+        if (cursor == null || cursor.isBlank()) {
+            return new RatingCursor(null, null);
+        }
+
+        try {
+            String[] parts = cursor.split("_");
+            if (parts.length != 2) {
+                throw new ReviewException(ReviewErrorCode.INVALID_CURSOR);
+            }
+
+            Double rating = Double.parseDouble(parts[0]);
+            Long reviewId = Long.parseLong(parts[1]);
+
+            return new RatingCursor(rating, reviewId);
+        } catch (NumberFormatException e){
+            throw new ReviewException(ReviewErrorCode.INVALID_CURSOR);
+        }
+    }
+
+    // 별점순 커서 사용을 위한 전용 DTO 객체 선언
+    private record RatingCursor(Double rating, Long reviewId) {}
 }
