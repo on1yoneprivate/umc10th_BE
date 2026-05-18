@@ -1,6 +1,5 @@
 package com.umc.umc_10th.domain.mission.controller;
 
-import com.umc.umc_10th.domain.mission.dto.MissionReqDTO;
 import com.umc.umc_10th.domain.mission.dto.MissionResDTO;
 import com.umc.umc_10th.domain.mission.exception.code.MissionSuccessCode;
 import com.umc.umc_10th.domain.mission.service.MissionService;
@@ -17,14 +16,14 @@ public class MissionController {
 
     private final MissionService missionService;
 
-    @PostMapping("/in-progress")
+    @GetMapping("/in-progress")
     public ApiResponse<MissionResDTO.MissionList> getInProgressMissions(
-            @RequestBody MissionReqDTO.InProgressMissionRequest request,
+            @RequestParam Long memberId,
             @RequestParam(defaultValue = "0") @Min(0) int page,
             @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
         BaseSuccessCode code = MissionSuccessCode.MISSION_IN_PROGRESS_LIST_SUCCESS;
-        return ApiResponse.onSuccess(code, missionService.getInProgressMissions(request.memberId(), page, size));
+        return ApiResponse.onSuccess(code, missionService.getInProgressMissions(memberId, page, size));
     }
 
     @GetMapping("/completed")
