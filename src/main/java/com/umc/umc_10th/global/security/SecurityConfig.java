@@ -53,7 +53,7 @@ public class SecurityConfig {
 
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)     // 인증 실패 (401)
-                        .accessDeniedHandler(accessDeniedHandler)               // 인가 실패 (409)
+                        .accessDeniedHandler(accessDeniedHandler)               // 인가 실패 (403)
                 );
 
         return http.build();
