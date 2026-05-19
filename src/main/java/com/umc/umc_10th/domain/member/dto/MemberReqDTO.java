@@ -8,6 +8,7 @@ public class MemberReqDTO {
 
     // 회원 가입
     public record SignUp(
+            String email,
             String nickname,
             Gender gender,                  // MALE or FEMALE
             LocalDate birth,
