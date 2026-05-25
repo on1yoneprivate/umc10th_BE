@@ -3,6 +3,7 @@ package com.umc.umc_10th.domain.member.entity;
 import com.umc.umc_10th.domain.member.enums.Gender;
 import com.umc.umc_10th.domain.member.enums.SocialType;
 import com.umc.umc_10th.domain.member.enums.RegionType;
+import com.umc.umc_10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Table(name = "member")
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +43,7 @@ public class Member {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
+    @Builder.Default
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
@@ -52,21 +54,16 @@ public class Member {
     @Column(name = "address_detail", length = 255)
     private String addressDetail;
 
+    @Builder.Default
     @Column(name = "point", nullable = false)
     private Long point = 0L;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "social_type", length = 20, nullable = true)
+    @Column(name = "social_type", length = 20)
     private SocialType socialType;
 
-    @Column(name = "social_uid", length = 255, nullable = false)
+    @Column(name = "social_uid", length = 255)
     private String socialUid;
-
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;

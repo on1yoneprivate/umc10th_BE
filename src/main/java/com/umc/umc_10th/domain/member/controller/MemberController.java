@@ -6,6 +6,7 @@ import com.umc.umc_10th.domain.member.exception.code.MemberSuccessCode;
 import com.umc.umc_10th.domain.member.service.MemberService;
 import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ApiResponse<MemberResDTO.SignUp> signup
-            (@RequestBody MemberReqDTO.SignUp request) {
+            (@Valid @RequestBody MemberReqDTO.SignUp request) {
 
         BaseSuccessCode code = MemberSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.signUp(request));

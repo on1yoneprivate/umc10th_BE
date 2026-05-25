@@ -5,7 +5,6 @@ import com.umc.umc_10th.domain.member.repository.MemberRepository;
 import com.umc.umc_10th.domain.review.dto.ReviewReqDTO;
 import com.umc.umc_10th.domain.review.dto.ReviewResDTO;
 import com.umc.umc_10th.domain.review.entity.Review;
-import com.umc.umc_10th.domain.review.exception.ReviewException;
 import com.umc.umc_10th.domain.review.exception.code.ReviewErrorCode;
 import com.umc.umc_10th.domain.review.repository.ReviewRepository;
 import com.umc.umc_10th.domain.store.entity.Store;
@@ -115,7 +114,7 @@ public class ReviewService {
         try {
             String[] parts = cursor.split("_");
             if (parts.length != 2) {
-                throw new ReviewException(ReviewErrorCode.INVALID_CURSOR);
+                throw new CustomException(ReviewErrorCode.INVALID_CURSOR);
             }
 
             Double rating = Double.parseDouble(parts[0]);
@@ -123,7 +122,7 @@ public class ReviewService {
 
             return new RatingCursor(rating, reviewId);
         } catch (NumberFormatException e){
-            throw new ReviewException(ReviewErrorCode.INVALID_CURSOR);
+            throw new CustomException(ReviewErrorCode.INVALID_CURSOR);
         }
     }
 

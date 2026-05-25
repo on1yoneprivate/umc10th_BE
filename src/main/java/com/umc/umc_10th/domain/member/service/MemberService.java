@@ -7,6 +7,7 @@ import com.umc.umc_10th.domain.member.exception.code.MemberErrorCode;
 import com.umc.umc_10th.domain.member.repository.MemberRepository;
 import com.umc.umc_10th.global.apiPayLoad.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,9 +15,33 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberResDTO.SignUp signUp(MemberReqDTO.SignUp request) {
-        return null;
+
+        if (memberRepository.existsByEmail(request.email())) {
+            throw new CustomException(MemberErrorCode.EMAIL_ALREADY_EXISTS);
+        }
+
+        if (memberRepository.existsByNickname(request.nickname())) {
+            throw new CustomException(MemberErrorCode.NICKNAME_ALREADY_EXISTS);
+        }
+
+        Member member = Member.builder()
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
+                .nickname(request.nickname())
+                .gender(request.gender())
+                .birth(request.birth())
+                .build();
+
+        Member savedMember = memberRepository.save(member);
+
+        return new MemberResDTO.SignUp(
+                savedMember.getId(),
+                savedMember.getNickname(),
+                savedMember.getCreatedAt()
+        );
     }
 
     public MemberResDTO.MyPage getMyPage(Long memberId) {
