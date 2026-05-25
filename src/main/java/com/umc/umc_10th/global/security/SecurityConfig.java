@@ -30,6 +30,7 @@ public class SecurityConfig {
                         // 로그인 없이 접근 가능한 Public API
                         .requestMatchers(
                                 "/users/signup",
+                                "/users/login",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
