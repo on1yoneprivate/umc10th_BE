@@ -8,6 +8,7 @@ import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,7 +34,9 @@ public class MemberController {
     }
 
     @GetMapping("/mypage")
-    public ApiResponse<MemberResDTO.MyPage> getMyPage(@RequestParam Long memberId) {
+    public ApiResponse<MemberResDTO.MyPage> getMyPage(Authentication authentication) {
+
+        Long memberId = (Long) authentication.getPrincipal();
 
         return ApiResponse.onSuccess(MemberSuccessCode.MYPAGE_SUCCESS, memberService.getMyPage(memberId));
     }
