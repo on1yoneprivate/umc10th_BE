@@ -6,6 +6,7 @@ import com.umc.umc_10th.domain.member.entity.Member;
 import com.umc.umc_10th.domain.member.exception.code.MemberErrorCode;
 import com.umc.umc_10th.domain.member.repository.MemberRepository;
 import com.umc.umc_10th.global.apiPayLoad.exception.CustomException;
+import com.umc.umc_10th.global.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public MemberResDTO.SignUp signUp(MemberReqDTO.SignUp request) {
 
@@ -41,6 +43,26 @@ public class MemberService {
                 savedMember.getId(),
                 savedMember.getNickname(),
                 savedMember.getCreatedAt()
+        );
+    }
+
+    public MemberResDTO.Login login(MemberReqDTO.Login request) {
+
+        Member member = memberRepository.findByEmail(request.email())
+                .orElseThrow(()-> new CustomException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+            throw new CustomException(MemberErrorCode.INVALID_PASSWORD);
+        }
+
+        String accessToken = jwtUtil.generateAccessToken(member.getId(), member.getEmail());
+        String refreshToken = jwtUtil.generateRefreshToken(member.getId(), member.getEmail());
+
+        return new MemberResDTO.Login(
+                member.getId(),
+                member.getEmail(),
+                accessToken,
+                refreshToken
         );
     }
 

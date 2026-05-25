@@ -21,14 +21,20 @@ public class MemberController {
     public ApiResponse<MemberResDTO.SignUp> signup
             (@Valid @RequestBody MemberReqDTO.SignUp request) {
 
-        BaseSuccessCode code = MemberSuccessCode.OK;
+        BaseSuccessCode code = MemberSuccessCode.SIGNUP_SUCCESS;
         return ApiResponse.onSuccess(code, memberService.signUp(request));
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<MemberResDTO.Login> login
+            (@Valid @RequestBody MemberReqDTO.Login request) {
+
+        return ApiResponse.onSuccess(MemberSuccessCode.LOGIN_SUCCESS, memberService.login(request));
     }
 
     @GetMapping("/mypage")
     public ApiResponse<MemberResDTO.MyPage> getMyPage(@RequestParam Long memberId) {
 
-        BaseSuccessCode code = MemberSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.getMyPage(memberId));
+        return ApiResponse.onSuccess(MemberSuccessCode.MYPAGE_SUCCESS, memberService.getMyPage(memberId));
     }
 }
