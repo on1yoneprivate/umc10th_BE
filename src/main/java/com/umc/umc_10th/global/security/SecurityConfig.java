@@ -2,14 +2,17 @@ package com.umc.umc_10th.global.security;
 
 import com.umc.umc_10th.global.security.handler.CustomAccessDeniedHandler;
 import com.umc.umc_10th.global.security.handler.CustomAuthenticationEntryPoint;
+import com.umc.umc_10th.global.security.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,16 +23,22 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
+                .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable())
+
+                // JWT는 세션 사용 X
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
                         // 로그인 없이 접근 가능한 Public API
                         .requestMatchers(
                                 "/users/signup",
+                                "/users/login",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
@@ -38,22 +47,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                .formLogin(form -> form
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/swagger-ui/index.html", true)
-                        .permitAll()
-                )
-
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                )
-
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)     // 인증 실패 (401)
                         .accessDeniedHandler(accessDeniedHandler)               // 인가 실패 (403)
+                )
+
+                .addFilterBefore(
+                        jwtAuthFilter, UsernamePasswordAuthenticationFilter.class
                 );
 
         return http.build();

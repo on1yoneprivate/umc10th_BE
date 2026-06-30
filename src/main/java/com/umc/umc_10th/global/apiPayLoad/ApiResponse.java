@@ -26,7 +26,7 @@ public class ApiResponse<T> {
 
     // 성공
     public static <T> ApiResponse<T> onSuccess(BaseSuccessCode code, T result) {
-        return new ApiResponse<>(true, code.getCode(), code.getCode(), result);
+        return new ApiResponse<>(true, code.getCode(), code.getMessage(), result);
     }
 
     // 실패

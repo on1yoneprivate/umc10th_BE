@@ -15,6 +15,14 @@ public class MemberResDTO {
             LocalDateTime createdAt
     ){}
 
+    // 로그인
+    public record Login(
+            Long memberId,
+            String email,
+            String accessToken,
+            String refreshToken
+    ) {}
+
     // 마이페이지
     public record MyPage(
             Long memberId,

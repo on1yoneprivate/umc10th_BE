@@ -8,6 +8,7 @@ import com.umc.umc_10th.global.apiPayLoad.ApiResponse;
 import com.umc.umc_10th.global.apiPayLoad.code.BaseSuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,14 +22,22 @@ public class MemberController {
     public ApiResponse<MemberResDTO.SignUp> signup
             (@Valid @RequestBody MemberReqDTO.SignUp request) {
 
-        BaseSuccessCode code = MemberSuccessCode.OK;
+        BaseSuccessCode code = MemberSuccessCode.SIGNUP_SUCCESS;
         return ApiResponse.onSuccess(code, memberService.signUp(request));
     }
 
-    @GetMapping("/mypage")
-    public ApiResponse<MemberResDTO.MyPage> getMyPage(@RequestParam Long memberId) {
+    @PostMapping("/login")
+    public ApiResponse<MemberResDTO.Login> login
+            (@Valid @RequestBody MemberReqDTO.Login request) {
 
-        BaseSuccessCode code = MemberSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.getMyPage(memberId));
+        return ApiResponse.onSuccess(MemberSuccessCode.LOGIN_SUCCESS, memberService.login(request));
+    }
+
+    @GetMapping("/mypage")
+    public ApiResponse<MemberResDTO.MyPage> getMyPage(Authentication authentication) {
+
+        Long memberId = (Long) authentication.getPrincipal();
+
+        return ApiResponse.onSuccess(MemberSuccessCode.MYPAGE_SUCCESS, memberService.getMyPage(memberId));
     }
 }
