@@ -1,19 +1,43 @@
-## 🔮 SSWU 10th UMC Spring Boot Junior
+# 🚀 Deployment & Infrastructure
 
-성신여대 스프링부트 스터디 주니어 레포지토리입니다. 
+> AWS EC2 환경에서 Docker 기반으로 Spring Boot 애플리케이션을 배포하고, Nginx Reverse Proxy 및 HTTPS를 적용하였다. <br>  GitHub Actions를 이용하여 자동 배포되는 CD 환경을 구축하였다.
 
-### 💻 Github 미션 제출 방식
+---
 
-1. 개인 메인 브랜치를 생성한다. 형식: [닉네임]
-2. 주차별 작업 브랜치를 생성한다. 형식: [닉네임]/week01
-3. 작업 브랜치에서 미션 완료 후, 개인 메인 브랜치로 PR을 보낸다. 
+## CD Pipeline
 
-### ‼️ PR 규칙
+```text
+[IntelliJ]
+     │
+ git push
+     ▼
+[GitHub]
+     │
+     ▼
+[GitHub Actions]
+     │
+ Build & Deploy
+     ▼
+[AWS EC2]
+     │
+Docker Compose
+     ▼
+Spring Boot
+```
 
-- 네이밍 규칙 준수 ex) [닉네임] Week01 미션 제출
-- 작업별로 중간중간 Commit하기 ex) [FEAT] Entity 생성
+---
 
-### 🤔 작업 진행 방식
+## 📦 Deployment Stack
 
-- 지난 주 미션 PR : 피드백 사항을 최대한 수정한 후에 PR Merge, 수정 사항이 많을 경우 Merge 하고 진행 
-- 이번 주 미션 PR : 지난 주 PR을 Merge하고, 새로운 작업 브랜치를 파고 진행, 저번 주 브랜치 삭제 권장
+| Category | Technology |
+|----------|------------|
+| Application | Spring Boot |
+| Server | AWS EC2 |
+| Container | Docker |
+| Orchestration | Docker Compose |
+| Reverse Proxy | Nginx |
+| HTTPS | Let's Encrypt |
+| Database | MySQL |
+| CI/CD | GitHub Actions |
+
+---
